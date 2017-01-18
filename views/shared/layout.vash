@@ -1,0 +1,46 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@model.title</title>  
+    <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/css/site.css" rel="stylesheet" />
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/js/paging.js"></script>   
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/" class="navbar-brand">Coding Soldier</a>                
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/posts/">Posts</a></li>
+                    <li><a href="/studies/">Studies</a></li>
+                    <li><a href="/home/about/boney-johns/">About</a></li>                    
+                    <li><a href="/home/technologies/">Technologies</a></li>
+                </ul>                
+            </div>
+        </div>
+    </div>
+    <div class="img-codingSoldier">
+        <img src="/images/soldier.png" />
+    </div>
+    <div class="container body-content">
+        @html.block("body")
+        <hr />
+        <footer>
+            <p>2016 - Coding Soldier</p>
+        </footer>
+    </div>
+   
+   <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>   
+</body>
+</html>

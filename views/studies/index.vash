@@ -1,0 +1,42 @@
+@html.extend('shared/layout', function(model) {
+  @html.block('body', function (model) {  
+      <h2>Studies</h2>
+      <p>
+        <a href="/studies/create"></a>
+      </p>
+      @model.studies.forEach(function(item){
+        <div class="row">
+            <div class="col-md-4">
+                <b>@(item.studyHeader)</b>                
+                <!--<text>(</text>
+                <a href="/studies/edit?id=@(item.id)">Edit</a> |
+                <a href="/studies/delete?id=@(item.id)" onclick="return confirm('Are you sure you wish to delete this study?');">Delete</a>                
+                <text>)</text>-->           
+                <br />
+                <i>Category: @(item.categoryName)</i>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-lg-12 col-sm-2">
+                <pre>@(item.studyContent)</pre>
+            </div>
+        </div>
+        <div class="row" style="margin-top:5px">
+        </div>
+      })
+      <div id="Paging" style="text-align:center">
+            Page @(model.pageIndex) of @(model.totalPageCount)
+            <div class="pagination-container">
+                <ul class="pagination">                    
+                </ul>
+            </div>
+      </div>   
+  });
+});
+<script>
+    jQuery(document).ready(function(){
+        var currentIndex = @(model.pageIndex);
+        var totalPageCount =  @(model.totalPageCount);
+        SetPaging(currentIndex, totalPageCount, "/studies");
+    });
+</script>

@@ -1,0 +1,17 @@
+{
+  "name": "codingsoldier",
+  "version": "0.0.1",
+  "description": "Coding Soldier in Node",
+  "author": "bjohns@logitech.com",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "express-session": "^1.14.1",
+    "mongodb": "^2.2.10",
+    "vash": "^0.12.2"
+  },
+  "devDependencies": {}
+}
