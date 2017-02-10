@@ -1,43 +1,50 @@
 (function(postsDAL){
     var database = require("./database");
 
-    postsDAL.findPosts = function(pagingData, next){
-        database.getDb(function(error, db){
-            if(error){
-                next(error, null);
-            }
-            else{
-                db.posts.find(null, null, pagingData).toArray(next);        
-            }
-        });
+    postsDAL.findPosts = function(pagingData){
+        return database.getDb()
+            .then(function(db){
+                return findPosts(db, pagingData);
+            });
     };
 
-    postsDAL.getPostsCount = function(next){
-        database.getDb(function(error, db){
-        if(error){
-            next(error, null);
-        }
-        else{
-            db.posts.find().count(next);
-        }
-        });
+    function findPosts(db, pagingData){
+        return db.posts.find(null, null, pagingData).toArray()
+            .then(function(posts){
+                return posts;
+            });
+    }
+
+    postsDAL.getPostsCount = function(){
+        return database.getDb()
+                .then(getPostsCount);
     };
 
-    postsDAL.getPosts = function(id, next){
-        database.getDb(function(error, db){
-        if(error){
-            next(error, null);
-        }
-        else{
-            var posts = null;
-            if(!id){
-            db.posts.find().toArray(next);
-            }
-            else{
-            db.posts.findOne({ id : id }, next);
-            }        
-        }   
-        });
-    }; 
+    function getPostsCount(db){
+        return db.posts.find().count()
+            .then(function(count){
+                return count;
+            })
+            .catch(function(err){
+                consolo.log(err);
+            });
+    }
 
+    postsDAL.getPosts = function(id){
+        return database.getDb()
+            .then(function(db){
+                if(!id){
+                    return db.posts.find().toArray()
+                        .then(function(posts){
+                            return posts;
+                        });
+                }
+                else{
+                    return db.posts.findOne({ id : id })
+                        .then(function(post){
+                            return post;
+                        })
+                }
+            });        
+    };
 })(module.exports);

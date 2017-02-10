@@ -1,26 +1,36 @@
 (function(studiesDAL){
     var database = require("./database");
     
-    studiesDAL.findStudies = function(pagingData, next){
-        database.getDb(function(error, db){
-            if(error){
-                next(error, null);
-            }
-            else{
-                db.studies.find(null, null, pagingData).toArray(next);        
-            }
-        });
+    studiesDAL.findStudies = function(pagingData){
+        return database.getDb()
+                .then(function(db){
+                    return findStudies(db, pagingData);
+                });
+    };    
+
+    studiesDAL.getStudiesCount = function(){
+        return database.getDb()
+                .then(getStudiesCount);        
     };
 
-    studiesDAL.getStudiesCount = function(next){
-        database.getDb(function(error, db){
-            if(error){
-                next(error, null);
-            }
-            else{
-                db.studies.find().count(next);
-            }
-        });
-    };
+    function findStudies(db, pagingData){
+        return db.studies.find(null, null, pagingData).toArray()
+                .then(function(studies){
+                    return studies;
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+    }
+
+    function getStudiesCount(db){
+        return db.studies.find().count()
+                .then(function(count){
+                    return count;
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+    }
 
 })(module.exports);

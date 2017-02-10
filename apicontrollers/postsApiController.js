@@ -2,8 +2,10 @@
     var data = require("../data");   
 
     postsApiController.getAllPosts = function(req, res){
-        response = res;
-        data.getPosts(null, responseCallBack);
+        data.getPosts()
+            .then(function(posts){
+                responseCallBack(null, posts, res);
+            });       
     };
 
     postsApiController.getPostById = function(req, res){
@@ -13,8 +15,8 @@
             data.getPosts(id, responseCallBack);
     };
 
-    var response = null;
-    var responseCallBack = function(error, posts){
+    //var response = null;
+    var responseCallBack = function(error, posts, response){
         if(error){
             response.send(500, error);
         }
@@ -22,5 +24,6 @@
             response.set('Content-Type', 'application/json');
             response.send(posts);
         }
+        return;
     };        
 })(module.exports);

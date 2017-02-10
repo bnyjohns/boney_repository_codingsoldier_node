@@ -1,15 +1,17 @@
 (function(categoriesDAL){    
     var database = require("./database");
 
-    categoriesDAL.getCategories = function(next){
-        database.getDb(function(error, db){
-            if(error){
-                next(error, null);
-            }
-            else{
-                db.categories.find().toArray(next);
-            }
-        });
+    categoriesDAL.getCategories = function(){
+        return database.getDb()
+            .then(function(db){
+                db.categories.find().toArray()
+                .then(function(categories){
+                    return categories;
+                });
+            })
+            .catch(function(err){
+                console.log(err);
+            });        
     };
 })(module.exports);
 

@@ -6,108 +6,88 @@
   var postsDAL = require("./postsDAL");
   var categoriesDAL = require("./categoriesDAL");  
   var studiesDAL = require("./studiesDAL");
+  var errorHandler = require('../core/errorHandler');
 
-  data.getPostsCount = function(next){
-    postsDAL.getPostsCount(next);
+  data.getPostsCount = function(){
+    return postsDAL.getPostsCount();
   };
 
-  data.findPosts = function(pagingData, next){
-      postsDAL.findPosts(pagingData, next);
+  data.findPosts = function(pagingData){
+    return postsDAL.findPosts(pagingData);
   };  
 
-  data.getPosts = function(id, next){
-    postsDAL.getPosts(id, next);
+  data.getPosts = function(id){
+    return postsDAL.getPosts(id);
   };
 
-  data.getStudiesCount = function(next){
-    studiesDAL.getStudiesCount(next);
+  data.getStudiesCount = function(){
+    return studiesDAL.getStudiesCount();
   };
 
-  data.findStudies = function(pagingData, next){
-      studiesDAL.findStudies(pagingData, next);
+  data.findStudies = function(pagingData){
+    return studiesDAL.findStudies(pagingData);
   };
 
-  data.getCategories = function(next){
-    categoriesDAL.getCategories(next);
+  data.getCategories = function(){
+    return categoriesDAL.getCategories();
   };
   
   function seedDatabase(){
-    database.getDb(function(error, db){
-      if(error){
-        console.log("Failed to connect to DB while attempting to seed");
-      }
-      else{
-        seedPostsToDatabase(db);
-        seedStudiesToDatabase(db);
-        seedCategoriesToDatabase(db);
-      }
-     });    
-  };
+      database.getDb()
+      .then(function(db){      
+          seedPostsToDatabase(db);
+          seedStudiesToDatabase(db);
+          seedCategoriesToDatabase(db);
+      })
+      .catch(function(error){
+          console.log("Failed to connect to DB while attempting to seed");
+      });    
+  }
+
+  function insertSeedDataIntoDb(seedData,dbData){
+    seedData.forEach(function(item) {
+        dbData.insert(item, function(err){
+          if(err){
+            console.log("Error inserting item into Db");
+          }
+        });
+    });
+  }
 
   function seedPostsToDatabase(db){
     db.posts.deleteMany({});
-    db.posts.count(function(error, count){
-      if(error){
-        console.log("Error accessing posts");
-      }
-      else{
-        if(count === 0){
-          seedPosts.initialPosts.forEach(function(item) {
-            db.posts.insert(item, function(err){
-              if(err){
-                console.log("Error inserting item into posts");
-              }
-            });
-          });
-        }
-        else{
-          console.log("Already seeded");
-        }
-      }
-    });
+    db.posts.count()
+    .then(function(count){
+      if(count === 0)
+        insertSeedDataIntoDb(seedPosts.initialPosts, db.posts);      
+      else
+        console.log("Posts already seeded");      
+    })
+    .catch(errorHandler.logError);    
   }
 
   function seedStudiesToDatabase(db){
     db.studies.deleteMany({});
-    db.studies.count(function(error, count){
-      if(error){
-        console.log("Error accessing studies");
-      }
-      else{
-        if(count === 0){
-          seedStudies.initialStudies.forEach(function(item) {
-            db.studies.insert(item, function(err){
-              if(err){
-                console.log("Error inserting item into studies");
-              }
-            });
-          });
-        }
-        else{
-          console.log("Already seeded");
-        }
-      }
-    });
+    db.studies.count()
+    .then(function(count){
+      if(count === 0)
+        insertSeedDataIntoDb(seedStudies.initialStudies, db.studies);      
+      else
+        console.log("Studies already seeded");      
+    })
+    .catch(errorHandler.logError);    
   }
 
   function seedCategoriesToDatabase(db){
     db.categories.deleteMany({});
-    db.categories.count(function(error, count){
-      if(error){
-        console.log('Error accessing posts');
-      }
-      else{
-        if(count === 0){
-          seedCategories.initialCategories.forEach(function(item){
-            db.categories.insert(item, function(err){
-              if(err){
-                console.log("Error inserting item into categories");
-              }
-            });
-          });
-        }
-      }
-    });
+    db.categories.count()
+    .then(function(count){
+      if(count === 0)
+        insertSeedDataIntoDb(seedCategories.initialCategories, db.categories);      
+      else
+        console.log("Categories already seeded");      
+    })
+    .catch(errorHandler.logError);
   }
 
   seedDatabase();

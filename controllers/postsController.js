@@ -35,27 +35,53 @@
         var pagingData = {
             skip: skip,
             limit: pageSize
-        };         
-           
-        data.getPostsCount(function(err, totalPostsCount){
-            if(!err){
-                data.findPosts(pagingData, 
-                    function(error,posts){
-                        var totalPageCount = Math.ceil(totalPostsCount/pageSize);
-                        res.render('posts/index',
-                        {
-                            pageIndex: page,
-                            totalPageCount: totalPageCount,
-                            title: "Posts - Boney Johns - Coding Soldier",
-                            posts: posts
-                        });
-                    }
-                ); 
-            }
-            else{
+        };   
 
-            }            
+        data.getPostsCount()
+        .then(function(totalPostsCount){
+            findPosts(totalPostsCount, pagingData);            
+        })  
+        .catch(function(err){
+
         });
+
+        function findPosts(totalPostsCount, pagingData){
+            data.findPosts(pagingData)            
+            .then(function(posts){
+                renderPosts(totalPostsCount, posts);
+            });
+        }
+
+        function renderPosts(totalPostsCount, posts){
+            var totalPageCount = Math.ceil(totalPostsCount/pageSize);
+            res.render('posts/index',
+            {
+                pageIndex: page,
+                totalPageCount: totalPageCount,
+                title: "Posts - Boney Johns - Coding Soldier",
+                posts: posts
+            });
+        }
+           
+        // data.getPostsCount(function(err, totalPostsCount){
+        //     if(!err){
+        //         data.findPosts(pagingData, 
+        //             function(error,posts){
+        //                 var totalPageCount = Math.ceil(totalPostsCount/pageSize);
+        //                 res.render('posts/index',
+        //                 {
+        //                     pageIndex: page,
+        //                     totalPageCount: totalPageCount,
+        //                     title: "Posts - Boney Johns - Coding Soldier",
+        //                     posts: posts
+        //                 });
+        //             }
+        //         ); 
+        //     }
+        //     else{
+
+        //     }            
+        // });
                
     };
 })(module.exports);

@@ -1,0 +1,7 @@
+No module loader(Browserify/webpack) is used till now.
+Bower was used initially. Not used anymore. Kept here for understanding how it is used.
+Webpack was setup. But not used.
+
+Gulp is used for minifying JS and CSS files.
+
+Run command: npm run start
