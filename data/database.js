@@ -1,4 +1,4 @@
-(function(database1){
+(function(database){
     var mongodb = require("mongodb");
     var errorHandler = require('../core/errorHandler');
     var mongoUrl = "mongodb://localhost:27017/codingSoldierDb";
@@ -13,7 +13,7 @@
                 };        
     };
 
-    database1.getDb = function() {
+    database.getDb = function() {
         if(theDb)
             return Promise.resolve(theDb);
         else{

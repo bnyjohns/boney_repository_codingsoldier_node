@@ -7,7 +7,7 @@ var session = require('express-session');
 var cookie = require('cookie-parser');
 var routes = require('./routes');
 var path = require('path');
-var publicAssetsPath = path.resolve(__dirname,  "../public")
+var publicAssetsPath = path.resolve(__dirname,  "../public");
 
 //Configure app
 app.use(cookie());
