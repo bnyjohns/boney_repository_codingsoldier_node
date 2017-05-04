@@ -1,65 +1,42 @@
 (function(studiesController){
-    var data = require("../data");
-    var pageSize = 2;
-
+    let data = require("../data");
+    let pageSize = 2;
+    
     studiesController.index = function(req, res){
-        var page = parseInt(req.query.page);       
+        let page = parseInt(req.query.page);
+        let totalPageCount = 0;
+
         if(!page){
             page = 1;
         }
 
-        var skip = page > 0 ? ((page - 1) * pageSize) : 0;
-        var pagingData = {
+        let skip = page > 0 ? ((page - 1) * pageSize) : 0;
+        let pagingData = {
             skip: skip,
             limit: pageSize
         };
+        
+        let studiesCountPromise = data.getStudiesCount();
+        let studiesPromise = data.findStudies(pagingData);
 
-        data.getStudiesCount()
-        .then(function(totalStudiesCount){
-            findAndRenderStudies(totalStudiesCount, pagingData);            
+        Promise.all([studiesCountPromise,studiesPromise])
+        .then(values => {
+            let totalCount = Math.ceil(values[0]/pageSize);  
+            render(page, totalCount, values[1], res);
         })
         .catch(function(err){
+            console.log(err);
+        });   
+    }; 
 
-        });
-
-    function findAndRenderStudies(totalStudiesCount, pagingData){
-        data.findStudies(pagingData)
-        .then(function(studies){
-            renderStudies(totalStudiesCount, studies);
-        });
-    }
-
-    function renderStudies(totalStudiesCount, studies){
-        var totalPageCount = Math.ceil(totalStudiesCount/pageSize);
-        res.render('studies/index',
+    let render = function(page, totalStudiesCount, studies, response){
+        response.render('studies/index',
         {
             pageIndex: page,
-            totalPageCount: totalPageCount,
+            totalPageCount: totalStudiesCount,
             title: "Studies - Boney Johns - Coding Soldier",
             studies: studies
         });
-    }
-        
-
-    // data.getStudiesCount(function(err, totalStudiesCount){
-    //     if(!err){
-    //         data.findStudies(pagingData, 
-    //             function(error,studies){
-    //                 var totalPageCount = Math.ceil(totalStudiesCount/pageSize);
-    //                 res.render('studies/index',
-    //                 {
-    //                     pageIndex: page,
-    //                     totalPageCount: totalPageCount,
-    //                     title: "Studies - Boney Johns - Coding Soldier",
-    //                     studies: studies
-    //                 });
-    //             }
-    //         ); 
-    //     }
-    //     else{
-
-    //     }            
-    // });
-    };   
+    };
 
 })(module.exports);

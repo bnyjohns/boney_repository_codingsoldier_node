@@ -1,4 +1,7 @@
 (function(homeController){
+    var technologies = ["Node", "MongoDb", "Express", "Vash View"];
+    var patternsAndPractices = ["Repository Pattern", "Promises Pattern"];
+
     homeController.index = function(req, res){
         res.render('home/index', 
         { 
@@ -11,10 +14,7 @@
         {
             title: "Boney Johns - Coding Soldier" 
         });
-    };
-
-    var technologies = ["Node", "MongoDb", "Express", "Vash View"];
-    var patternsAndPractices = ["Repository Pattern"];
+    };    
     
     homeController.technologies = function(req, res){
         res.render('home/technologies',

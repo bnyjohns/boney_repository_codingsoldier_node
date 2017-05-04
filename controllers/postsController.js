@@ -1,11 +1,11 @@
 (function(postsController){
-    var data = require("../data");
-    var pageSize = 2;
+    let data = require("../data");
+    let pageSize = 2;
 
     postsController.create = function(req, res){
         if(typeof req.body.isAQuestion !== 'undefined'){
-            var reqBody = req.body;
-            var post = {
+            let reqBody = req.body;
+            let post = {
                 id: 7,
                 postTitle: reqBody.title,
                 postContent: reqBody.content,
@@ -26,33 +26,30 @@
     };
 
     postsController.index = function(req,res){
-        var page = parseInt(req.query.page);       
+        let page = parseInt(req.query.page);       
         if(!page){
             page = 1;
         }
         
-        var skip = page > 0 ? ((page - 1) * pageSize) : 0;
-        var pagingData = {
+        let skip = page > 0 ? ((page - 1) * pageSize) : 0;
+        let pagingData = {
             skip: skip,
             limit: pageSize
         };   
 
-        data.getPostsCount()
-        .then(function(totalPostsCount){
-            findPosts(totalPostsCount, pagingData);            
-        })  
-        .catch(function(err){
+        let getPostsCountPromise = data.getPostsCount();
+        let findPostsPromise = data.findPosts();
 
-        });
+        Promise.all([getPostsCountPromise, findPostsPromise])
+        .then(values => {
+            renderPosts(page, values[0], values[1], res);
+        })
+        .catch(err => {
+            console.log(err);
+        });            
+    };
 
-        function findPosts(totalPostsCount, pagingData){
-            data.findPosts(pagingData)            
-            .then(function(posts){
-                renderPosts(totalPostsCount, posts);
-            });
-        }
-
-        function renderPosts(totalPostsCount, posts){
+    let renderPosts = function(page, totalPostsCount, posts, res){
             var totalPageCount = Math.ceil(totalPostsCount/pageSize);
             res.render('posts/index',
             {
@@ -61,27 +58,5 @@
                 title: "Posts - Boney Johns - Coding Soldier",
                 posts: posts
             });
-        }
-           
-        // data.getPostsCount(function(err, totalPostsCount){
-        //     if(!err){
-        //         data.findPosts(pagingData, 
-        //             function(error,posts){
-        //                 var totalPageCount = Math.ceil(totalPostsCount/pageSize);
-        //                 res.render('posts/index',
-        //                 {
-        //                     pageIndex: page,
-        //                     totalPageCount: totalPageCount,
-        //                     title: "Posts - Boney Johns - Coding Soldier",
-        //                     posts: posts
-        //                 });
-        //             }
-        //         ); 
-        //     }
-        //     else{
-
-        //     }            
-        // });
-               
     };
 })(module.exports);

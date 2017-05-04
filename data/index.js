@@ -34,19 +34,19 @@
   
   function seedDatabase(){
       database.getDb()
-      .then(function(db){      
+      .then(db => {      
           seedPostsToDatabase(db);
           seedStudiesToDatabase(db);
           seedCategoriesToDatabase(db);
       })
-      .catch(function(error){
+      .catch(err => {
           console.log("Failed to connect to DB while attempting to seed");
       });    
   }
 
   function insertSeedDataIntoDb(seedData,dbData){
-    seedData.forEach(function(item) {
-        dbData.insert(item, function(err){
+    seedData.forEach(item => {
+        dbData.insert(item, err => {
           if(err){
             console.log("Error inserting item into Db");
           }
@@ -57,7 +57,7 @@
   function seedPostsToDatabase(db){
     db.posts.deleteMany({});
     db.posts.count()
-    .then(function(count){
+    .then(count =>{
       if(count === 0)
         insertSeedDataIntoDb(seedPosts.initialPosts, db.posts);      
       else
@@ -69,7 +69,7 @@
   function seedStudiesToDatabase(db){
     db.studies.deleteMany({});
     db.studies.count()
-    .then(function(count){
+    .then(count =>{
       if(count === 0)
         insertSeedDataIntoDb(seedStudies.initialStudies, db.studies);      
       else
@@ -81,7 +81,7 @@
   function seedCategoriesToDatabase(db){
     db.categories.deleteMany({});
     db.categories.count()
-    .then(function(count){
+    .then(count =>{
       if(count === 0)
         insertSeedDataIntoDb(seedCategories.initialCategories, db.categories);      
       else

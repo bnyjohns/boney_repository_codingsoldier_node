@@ -3,48 +3,38 @@
 
     postsDAL.findPosts = function(pagingData){
         return database.getDb()
-            .then(function(db){
-                return findPosts(db, pagingData);
-            });
+            .then(db => {
+                return db.posts.find(null, null, pagingData).toArray(); 
+            })
+            .catch(err => {
+                console.log(err);
+            });          
     };
-
-    function findPosts(db, pagingData){
-        return db.posts.find(null, null, pagingData).toArray()
-            .then(function(posts){
-                return posts;
-            });
-    }
 
     postsDAL.getPostsCount = function(){
         return database.getDb()
-                .then(getPostsCount);
-    };
-
-    function getPostsCount(db){
-        return db.posts.find().count()
-            .then(function(count){
-                return count;
+            .then(db => {
+                return db.posts.find().count();
             })
-            .catch(function(err){
-                consolo.log(err);
-            });
-    }
+            .catch(err => {
+                console.log(err);
+            });              
+    };    
 
     postsDAL.getPosts = function(id){
         return database.getDb()
-            .then(function(db){
-                if(!id){
-                    return db.posts.find().toArray()
-                        .then(function(posts){
-                            return posts;
-                        });
-                }
-                else{
-                    return db.posts.findOne({ id : id })
-                        .then(function(post){
-                            return post;
-                        })
-                }
-            });        
+            .then(db => {
+                return getPosts(db,id);
+            });            
     };
+
+    let getPosts = function(db, id){
+        if(!id){
+            return db.posts.find().toArray();
+        }
+        else{
+            return db.posts.findOne({ id : id });
+        }
+    };
+        
 })(module.exports);
