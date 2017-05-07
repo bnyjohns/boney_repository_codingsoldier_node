@@ -3,19 +3,19 @@
   "version": "0.0.1",
   "description": "Coding Soldier in Node",
   "author": "bjohns@logitech.com",
-  "main": "./core/server.js",
+  "main": "./dist/core/server.js",
   "scripts": {
     "prestart": "gulp",
-    "start": "node ./core/server.js"
+    "start": "node ./dist/core/server.js"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
-    "express-session": "^1.14.1",   
-    "mongodb": "^2.2.10",   
-    "vash": "^0.12.2"    
+    "express-session": "^1.14.1",
+    "mongodb": "^2.2.10",
+    "vash": "^0.12.2"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",
@@ -27,9 +27,11 @@
     "css-mqpacker": "^5.0.1",
     "cssnano": "^3.10.0",
     "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
     "gulp-concat": "^2.6.1",
     "gulp-deporder": "^1.1.0",
     "gulp-postcss": "^6.3.0",
+    "gulp-rename": "^1.2.2",
     "gulp-sass": "^3.1.0",
     "gulp-strip-debug": "^1.1.0",
     "gulp-uglify": "^2.0.1",

@@ -38,7 +38,7 @@
         };   
 
         let getPostsCountPromise = data.getPostsCount();
-        let findPostsPromise = data.findPosts();
+        let findPostsPromise = data.findPosts(pagingData);
 
         Promise.all([getPostsCountPromise, findPostsPromise])
         .then(values => {

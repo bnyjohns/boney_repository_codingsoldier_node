@@ -1,0 +1,50 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@model.title</title>
+    <link href="/css/site.css" rel="stylesheet" /> 
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/home/index">Coding Soldier</a>                
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/home/index">Home</a></li>
+                    <li><a href="/posts/index">Posts</a></li>
+                    <li><a href="/studies/index">Studies</a></li>
+                    <li><a href="/home/about">About</a></li>                    
+                     <!--@if (User.IsInRole("Admin"))
+                    {
+                        <li>@Html.ActionLink("Roles", "Index", "Roles")</li>
+                    }-->
+                    <li><a href="/home/technologies">Technologies</a></li>
+                </ul>
+                <!--@Html.Partial("_LoginPartial")-->
+            </div>
+        </div>
+    </div>
+    <div class="img-codingSoldier">
+        <img src="/images/soldier.png" />
+    </div>
+    <div class="container body-content">
+        @html.block("body")
+        <hr />
+        <footer>
+            <p>2016 - Coding Soldier</p>
+        </footer>
+    </div>
+
+   <script src="/lib/jquery/dist/jquery.min.js"></script>
+   <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+   <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />   
+</body>
+</html>

@@ -5,36 +5,59 @@ var stripdebug = require('gulp-strip-debug');
 var uglify = require('gulp-uglify');
 var cssnano = require('cssnano');
 var postcss = require('gulp-postcss');
+var babel = require('gulp-babel');
+var rename = require('gulp-rename');
 
 // development mode?
 var devBuild = (process.env.NODE_ENV !== 'production');
 
-// folders
-var folder = {
-    src: 'public/',
-    build: 'public/'
-};
+var srcFolder = "srcEs6/";
+var publicFolder = srcFolder + "public/";
 
-// JavaScript processing
-gulp.task('jsTask', ['cssTask'], function() {
-    var jsbuild = gulp.src(folder.src + 'js/paging.js')
+//JavaScript processing
+gulp.task('jsTask', function() {
+    var jsbuild = gulp.src(publicFolder + 'js/paging.js')
                     .pipe(deporder())
                     .pipe(concat('bundle.min.js'))
                     .pipe(stripdebug())
                     .pipe(uglify());
-    return jsbuild.pipe(gulp.dest(folder.build + 'js/'));
+    return jsbuild.pipe(gulp.dest(publicFolder + 'js/'));
+});
+
+gulp.task('wrapperTask', ['copyPublicFolderTask', 'copyViewsFolderTask', 'babelifyTask', 'jsTask', 'cssTask']);
+
+gulp.task('copyPublicFolderTask', function(){
+    return gulp.src(srcFolder + 'public/*/*.*')
+            .pipe(gulp.dest('dist/public'));
+});
+
+gulp.task('copyViewsFolderTask', function(){
+    gulp.src(srcFolder + 'views/*/*.vash')
+    .pipe(gulp.dest('dist/views'));
+});
+
+//Babel processing
+gulp.task('babelifyTask', function(){
+    return gulp.src([srcFolder + '*/*.js', srcFolder + '*/*/*.js'])
+        .pipe(babel({
+            presets: ['es2015']
+        }))
+        // .pipe(rename(f => {
+        //     f.basename = f.basename.replace('.es6','');
+        // }))
+        .pipe(gulp.dest('dist'));
 });
 
 // CSS processing
 gulp.task('cssTask', function(){
-    var cssbuild = gulp.src(folder.src + 'css/*')
+    var cssbuild = gulp.src(publicFolder + 'css/*')
                     .pipe(concat('site.min.css'))
                     .pipe(postcss([cssnano]));
-    return cssbuild.pipe(gulp.dest(folder.build + 'css/'));
+    return cssbuild.pipe(gulp.dest(publicFolder + 'css/'));
 });
 
-// gulp.task('watch', ['jsTask'], function () {
-//     gulp.watch('*.js', ['jsTask']);
-// });
+gulp.task('watch', ['babelifyTask'], function () {
+    gulp.watch('*.js', ['babelifyTask']);
+});
 
-gulp.task('default', ['jsTask']);
+gulp.task('default', ['wrapperTask']);

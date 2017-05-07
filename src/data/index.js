@@ -1,7 +1,7 @@
 (function(data){
-  var seedPosts = require("./seedPosts");
-  var seedStudies = require("./seedStudies");
-  var seedCategories = require("./seedCategories");
+  var seedPosts = require("./seedData/seedPosts");
+  var seedStudies = require("./seedData/seedStudies");
+  var seedCategories = require("./seedData/seedCategories");
   var database = require("./database");
   var postsDAL = require("./postsDAL");
   var categoriesDAL = require("./categoriesDAL");  
