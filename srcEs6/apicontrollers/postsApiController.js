@@ -1,28 +1,34 @@
-import Data from '../data';
-
 let data;
 let responseCallBack = function(error, posts, response){
-    if(error){
-        response.send(500, error);
+    try{
+        if(error){
+            response.send(500, error);
+        }
+        else{ 
+            response.set('Content-Type', 'application/json');           
+            if(!posts)                
+                response.send('No Posts Found!!');                        
+            else            
+                response.send(posts);                         
+        }
     }
-    else{ 
-        response.set('Content-Type', 'application/json');           
-        if(!posts)                
-            response.send('No Posts Found!!');                        
-        else            
-            response.send(posts);                         
-    }
+    catch(e){
+        console.log(e);
+    }    
     return;
 };
 
 class PostsApiController{
-    constructor(){
-        data = new Data();
+    constructor(_data){
+        data = _data;
     }
+    
     getAllPosts(req, res){
-        data.getPosts()
-            .then(function(posts){
-                responseCallBack(null, posts, res);
+        return data.getPosts()
+            .then(function(posts){    
+                console.log('inside this');             
+                responseCallBack(null, posts, res);    
+                console.log('inside then');            
             })
             .catch(function(err){
                 responseCallBack(err, null, res);

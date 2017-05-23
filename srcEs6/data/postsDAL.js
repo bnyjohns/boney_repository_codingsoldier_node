@@ -11,8 +11,8 @@ let getPostsPrivate = function(db, id){
 let database;
 
 class PostsDAL{    
-    constructor(){
-        database = new Database();
+    constructor(dataBase){
+        database = dataBase;
     }
 
     findPosts(pagingData){

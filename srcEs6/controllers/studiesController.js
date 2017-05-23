@@ -1,5 +1,3 @@
-import Data from '../data';
-
 let pageSize = 2;
 let data;
 let render = function(page, totalStudiesCount, studies, response){
@@ -13,8 +11,8 @@ let render = function(page, totalStudiesCount, studies, response){
 };
 
 class StudiesController{  
-    constructor(){
-        data = new Data();
+    constructor(_data){
+        data = _data;
     }    
     index(req, res){
         let page = parseInt(req.query.page);

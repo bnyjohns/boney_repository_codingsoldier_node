@@ -1,5 +1,3 @@
-import Data from '../data';
-
 let pageSize = 2;
 let data;
 let renderPosts = function(page, totalPostsCount, posts, res){
@@ -14,8 +12,8 @@ let renderPosts = function(page, totalPostsCount, posts, res){
 };
 
 class PostsController{  
-    constructor(){
-        data = new Data();
+    constructor(_data){
+        data = _data;
     }  
     create(req, res){
         if(typeof req.body.isAQuestion !== 'undefined'){

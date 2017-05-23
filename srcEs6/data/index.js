@@ -1,23 +1,23 @@
 import SeedPosts from './seedData/seedPosts';
 import SeedStudies from './seedData/seedStudies';
 import SeedCategories from './seedData/seedCategories';
-import Database from './database';
-import PostsDAL from './postsDAL';
-import CategoriesDAL from './categoriesDAL';
-import StudiesDAL from './studiesDAL';
-import ErrorHandler from '../core/errorHandler';
+// import Database from './database';
+// import PostsDAL from './postsDAL';
+// import CategoriesDAL from './categoriesDAL';
+// import StudiesDAL from './studiesDAL';
+// import ErrorHandler from '../core/errorHandler';
+//import DiContainer from '../core/diContainer';
 
-let seedPosts, seedStudies, seedCategories, database, postsDAL, studiesDAL, errorHandler;
+let seedPosts, seedStudies, seedCategories, database, postsDAL, categoriesDAL, studiesDAL, errorHandler;
 
 class Data{
-    constructor(){        
-        seedPosts = new SeedPosts();
-        seedStudies = new SeedStudies();
-        seedCategories = new SeedCategories();
-        database = new Database();
-        postsDAL = new PostsDAL();
-        studiesDAL = new StudiesDAL();
-        errorHandler = new ErrorHandler();        
+    constructor(_dataBase, _postsDAL, _categoriesDAL, _studiesDAL, _errorHandler){ 
+        console.log('Inside Data Constructor');    
+        database = _dataBase;
+        postsDAL = _postsDAL;
+        categoriesDAL = _categoriesDAL;
+        studiesDAL = _studiesDAL;
+        errorHandler = _errorHandler;
     }
 
     static seed(){
@@ -74,6 +74,7 @@ let insertSeedDataIntoDb = function(seedData,dbData){
 };
 
 let seedPostsToDatabase = function(db){
+    seedPosts = new SeedPosts();
     db.posts.deleteMany({});
     db.posts.count()
     .then(count =>{
@@ -86,6 +87,7 @@ let seedPostsToDatabase = function(db){
 };
 
 let seedStudiesToDatabase = function(db){
+    seedStudies = new SeedStudies();
     db.studies.deleteMany({});
     db.studies.count()
     .then(count =>{
@@ -98,6 +100,7 @@ let seedStudiesToDatabase = function(db){
 };
 
 let seedCategoriesToDatabase = function(db){
+    seedCategories = new SeedCategories();
     db.categories.deleteMany({});
     db.categories.count()
     .then(count =>{

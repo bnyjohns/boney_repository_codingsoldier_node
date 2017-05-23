@@ -1,7 +1,7 @@
-import PostsApiController from '../apicontrollers/postsApiController';
-import HomeController from '../controllers/homeController';
-import PostsController from '../controllers/postsController';
-import StudiesController from '../controllers/studiesController';
+// import PostsApiController from '../apicontrollers/postsApiController';
+// import HomeController from '../controllers/homeController';
+// import PostsController from '../controllers/postsController';
+// import StudiesController from '../controllers/studiesController';
 
 let postsApiController, homeController, postsController, studiesController;
 let initFn = function(req, res, next){
@@ -15,11 +15,11 @@ let initFn = function(req, res, next){
 };
 
 class Routes{
-    constructor(){
-        postsApiController =  new PostsApiController();
-        homeController = new HomeController();
-        postsController = new PostsController();
-        studiesController = new StudiesController();
+    constructor(_postsApiController, _homeController, _postsController, _studiesController){        
+        postsApiController =  _postsApiController;
+        homeController = _homeController;
+        postsController = _postsController;
+        studiesController = _studiesController;
     }
     init(app){
         app.use(initFn);        

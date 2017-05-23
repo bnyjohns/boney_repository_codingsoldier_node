@@ -2,8 +2,8 @@ import Database from './database';
 
 let database;
 class StudiesDAL{
-    constructor(){
-        database = new Database();
+    constructor(dataBase){
+        database = dataBase;
     }
     findStudies(pagingData){
         return database.getDb()

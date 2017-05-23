@@ -6,10 +6,11 @@ import cookie from 'cookie-parser';
 import path from 'path';
 import Routes from './routes';
 import Data from '../data/index';
+import DIContainer from './diContainer';
 
 let publicAssetsPath = path.resolve(__dirname,  "../public");
 let app = express();
-let routes = new Routes();
+let routes = DIContainer.resolveRoutes();
 
 //Configure app
 Data.seed();
