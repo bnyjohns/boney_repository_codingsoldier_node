@@ -5,3 +5,5 @@ Webpack was setup. But not used.
 Gulp is used for minifying JS and CSS files.
 
 Run command: npm run start or npm start
+
+Test comment1
